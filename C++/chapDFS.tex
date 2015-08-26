@@ -1,4 +1,4 @@
-\chapter{深度优先搜索}
+﻿\chapter{深度优先搜索}
 
 
 \section{Palindrome Partitioning} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -896,36 +896,63 @@ You may assume that there will be only one unique solution.
 // 时间复杂度O(9^4)，空间复杂度O(1)
 class Solution {
 public:
-    bool solveSudoku(vector<vector<char> > &board) {
-        for (int i = 0; i < 9; ++i)
-            for (int j = 0; j < 9; ++j) {
-                if (board[i][j] == '.') {
-                    for (int k = 0; k < 9; ++k) {
-                        board[i][j] = '1' + k;
-                        if (isValid(board, i, j) && solveSudoku(board))
-                            return true;
+    void solveSudoku(vector<vector<char> > &board) {
+        util(board, 0);
+    }
+    bool util(vector<vector<char>>& board, int pos)
+    {
+        if (pos >= 81)
+            return true;
+        int i = pos / 9;
+        int j = pos % 9;
+        if (board[i][j] != '.')
+            return util(board, pos + 1);
+        else
+        {
+            for (char c = '1'; c <= '9'; c++)
+            {
+                if (!isInRow(board, i,c) && !isInCol(board, j, c) && !isInRec(board, i, j, c))
+                {
+                    board[i][j] = c;
+                    if (util(board, pos + 1))
+                        return true;
+                    else
                         board[i][j] = '.';
-                    }
-                    return false;
                 }
             }
-        return true;
+            return false;
+        }
     }
-private:
-    // 检查 (x, y) 是否合法
-    bool isValid(const vector<vector<char> > &board, int x, int y) {
-        int i, j;
-        for (i = 0; i < 9; i++) // 检查 y 列
-            if (i != x && board[i][y] == board[x][y])
-                return false;
-        for (j = 0; j < 9; j++) // 检查 x 行
-            if (j != y && board[x][j] == board[x][y])
-                return false;
-        for (i = 3 * (x / 3); i < 3 * (x / 3 + 1); i++)
-            for (j = 3 * (y / 3); j < 3 * (y / 3 + 1); j++)
-                if ((i != x || j != y) && board[i][j] == board[x][y])
-                    return false;
-        return true;
+
+    bool isInRow(vector<vector<char>>& board, int i, char c)
+    {
+        vector<char>& row = board[i];
+        for (int k = 0; k < 9; k++)
+        {
+            if (row[k] == c)
+                return true;
+        }
+        return false;
+    }
+    bool isInCol(vector<vector<char>>& board,int j, char c)
+    {
+        for (int k = 0; k < 9; k++)
+        {
+            if (board[k][j] == c)
+                return true;
+        }
+        return false;
+    }
+    bool isInRec(vector<vector<char>>& board, int i, int j, char c)
+    {
+        int bigrow = i / 3, bigcol = j / 3;
+        for (int m = 3 * bigrow; m < 3 * (bigrow + 1); m++)
+        {
+            for (int n = 3 * bigcol; n < 3 * (bigcol + 1); n++)
+                if (board[m][n] == c)
+                    return true;
+        }
+        return false;
     }
 };
 \end{Code}
