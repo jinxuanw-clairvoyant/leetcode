@@ -1,7 +1,7 @@
 #LeetCode题解
 -----------------
 ##PDF下载
-<a href="https://github.com/soulmachine/leetcode/raw/master/C%2B%2B/leetcode-cpp.pdf">LeetCode题解(C++版).pdf</a>
+<a href="https://github.com/jinxuan/leetcode/raw/master/C%2B%2B/leetcode-cpp.pdf">LeetCode题解(C++版).pdf</a>
 
 C++ 文件夹下是C++版，内容一摸一样，代码是用C++写的，
 
